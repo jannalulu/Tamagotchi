@@ -12,40 +12,31 @@ app.use(cors());
 
 const GITHUB_API_URL = 'https://api.github.com';
 
+async function fetchGitHubData(url, token) {
+  const response = await fetch(url, {
+    headers: {
+      'Authorization': `token ${token}`,
+      'Accept': 'application/vnd.github.v3+json'
+    }
+  });
+  if (!response.ok) {
+    throw new Error(`GitHub API responded with status ${response.status}`);
+  }
+  return response.json();
+}
+
 app.get('/api/commits', async (req, res) => {
   try {
-    // Fetch authenticated user's information
-    const userResponse = await fetch(`${GITHUB_API_URL}/user`, {
-      headers: {
-        'Authorization': `token ${process.env.GITHUB_TOKEN}`,
-        'Accept': 'application/vnd.github.v3+json'
-      }
-    });
-
-    if (!userResponse.ok) {
-      throw new Error(`GitHub API responded with status ${userResponse.status}`);
-    }
-
-    const userData = await userResponse.json();
+    const token = process.env.GITHUB_TOKEN;
+    const userData = await fetchGitHubData(`${GITHUB_API_URL}/user`, token);
     const username = userData.login;
 
-    const since = new Date();
-    since.setDate(since.getDate() - 30); // Get commits from the last 30 days
+    const fourteenDaysAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    const searchQuery = `author:${username} author-date:>${fourteenDaysAgo}`;
+    const searchUrl = `${GITHUB_API_URL}/search/commits?q=${encodeURIComponent(searchQuery)}`;
 
-    const eventsResponse = await fetch(`${GITHUB_API_URL}/users/${username}/events?per_page=100&since=${since.toISOString()}`, {
-      headers: {
-        'Authorization': `token ${process.env.GITHUB_TOKEN}`,
-        'Accept': 'application/vnd.github.v3+json'
-      }
-    });
-
-    if (!eventsResponse.ok) {
-      throw new Error(`GitHub API responded with status ${eventsResponse.status}`);
-    }
-
-    const eventsData = await eventsResponse.json();
-    const pushEvents = eventsData.filter(event => event.type === 'PushEvent');
-    const commitCount = pushEvents.reduce((total, event) => total + event.payload.commits.length, 0);
+    const searchData = await fetchGitHubData(searchUrl, token);
+    const commitCount = searchData.total_count;
 
     res.json({ commitCount, username });
   } catch (error) {
