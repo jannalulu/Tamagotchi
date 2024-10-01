@@ -8,10 +8,15 @@ const GitHubTamagotchi: React.FC<GitHubTamagotchiProps> = () => {
   const [frame, setFrame] = useState<number>(0);
   const [username, setUsername] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+  const [searchUsername, setSearchUsername] = useState<string>('');
 
-  const fetchCommits = async (): Promise<void> => {
+  const fetchCommits = async (user?: string): Promise<void> => {
+    if (!user) {
+      setError(null);
+      return;
+    }
     try {
-      const response = await fetch('/api/commits');
+      const response = await fetch(`/api/commits?username=${user}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -27,12 +32,12 @@ const GitHubTamagotchi: React.FC<GitHubTamagotchiProps> = () => {
 
   useEffect(() => {
     fetchCommits();
-    const interval = setInterval(fetchCommits, 60000); // Fetch every minute
+    const interval = setInterval(() => fetchCommits(), 60000); // Fetch every minute
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
-    setStage(Math.min(Math.floor(commits / 10), 2));
+    setStage(Math.min(Math.floor(commits / 10), 3));
   }, [commits]);
 
   useEffect(() => {
@@ -42,6 +47,14 @@ const GitHubTamagotchi: React.FC<GitHubTamagotchiProps> = () => {
     return () => clearInterval(animationInterval);
   }, []);
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchUsername.trim()) {
+      fetchCommits(searchUsername.trim());
+    } else {
+      setError('Please enter a GitHub username');
+    }
+  };
   const pixelArt: string[][] = [
     // Egg
     [
@@ -60,7 +73,7 @@ const GitHubTamagotchi: React.FC<GitHubTamagotchiProps> = () => {
    ▀▀██▀▀
     `
     ],
-    // Child
+    // Baby
     [
       `
    ▄▄██▄▄
@@ -79,7 +92,28 @@ const GitHubTamagotchi: React.FC<GitHubTamagotchiProps> = () => {
    ▄█  █▄
     `
     ],
-    // Adult
+    // Child
+    [
+      `
+    ▄██▄
+   ██▓▓██
+  ██●  ●██
+  ██    ██
+   ██  ██
+    ▀██▀
+   ▄█  █▄
+    `,
+      `
+    ▄██▄
+   ██▓▓██
+  ██-  -██
+  ██    ██
+   ██  ██
+    ▀██▀
+   ▄█  █▄
+    `
+    ],
+    // Adult 
     [
       `
   ▐▀▄   ▄▀▌
@@ -97,16 +131,25 @@ const GitHubTamagotchi: React.FC<GitHubTamagotchiProps> = () => {
   █  █▀▀█  █
      ▀  ▀
     `
-    ]
+    ],
   ];
 
   return (
     <div style={{padding: '20px', margin: '20px'}}>
+      <form onSubmit={handleSearch}>
+        <input
+          type="text"
+          value={searchUsername}
+          onChange={(e) => setSearchUsername(e.target.value)}
+          placeholder="Enter GitHub username"
+        />
+        <button type="submit">Search</button>
+      </form>
       {error && <p style={{color: 'red'}}>{error}</p>}
       <p>Commits: {commits}</p>
       <p>Stage: {stage}</p>
       <h2>GitHub Tamagotchi</h2>
-      {/*username && <p>GitHub User: {username}</p>*/}
+      {username && <p>GitHub User: {username}</p>}
       <pre style={{
         fontFamily: 'monospace',
         fontSize: '20px',
@@ -118,8 +161,9 @@ const GitHubTamagotchi: React.FC<GitHubTamagotchiProps> = () => {
         {pixelArt[stage][frame]}
       </pre>
       <p>{
-        stage === 0 ? "Keep committing to hatch the egg!" :
-        stage === 1 ? "Your creature is growing!" :
+        stage === 0 ? "Keep contributing to hatch the egg!" :
+        stage === 1 ? "Your creature is a baby!" :
+        stage === 2 ? "Your creature is growing into a child!" :
         "Your creature is thriving!"
       }</p>
     </div>
