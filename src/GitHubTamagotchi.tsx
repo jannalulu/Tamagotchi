@@ -68,7 +68,7 @@ const GitHubTamagotchi: React.FC<GitHubTamagotchiProps> = () => {
       `
    ▄▄██▄▄
   ██▒▒▒▒██
-  ██▒▒▒▒██
+  ██˛°˛°██
   ██▒▒▒▒██
    ▀▀██▀▀
     `
@@ -78,16 +78,16 @@ const GitHubTamagotchi: React.FC<GitHubTamagotchiProps> = () => {
       `
    ▄▄██▄▄
   ██▓▓▓▓██
-  ██●  ●██
-   ██  ██
+  ██◕  ◕██
+   ██ ‿ ██
     ▀██▀
    ▄█  █▄
     `,
       `
    ▄▄██▄▄
   ██▓▓▓▓██
-  ██-  -██
-   ██  ██
+  ██⊙  ⊙██
+   ██ ‿ ██
     ▀██▀
    ▄█  █▄
     `
@@ -106,8 +106,8 @@ const GitHubTamagotchi: React.FC<GitHubTamagotchiProps> = () => {
       `
     ▄██▄
    ██▓▓██
-  ██-  -██
-  ██    ██
+  ██☆  ☆██
+  ██  ω ██
    ██  ██
     ▀██▀
    ▄█  █▄
@@ -115,20 +115,20 @@ const GitHubTamagotchi: React.FC<GitHubTamagotchiProps> = () => {
     ],
     // Adult 
     [
-      `
+      ` 
   ▐▀▄   ▄▀▌
-  ██▓█▌█▓██
+  ██◕▼◕██
   ██▄█▀█▄██
    ▄▀▄██▄▀▄
-  █  █▀▀█  █
+  █  █▼▼█  █
      ▀  ▀
     `,
       `
   ▐▀▄   ▄▀▌
-  ██-█▌█-██
+  ██⊙▼⊙██
   ██▄█▀█▄██
    ▄▀▄██▄▀▄
-  █  █▀▀█  █
+  █  █▼▼█  █
      ▀  ▀
     `
     ],
