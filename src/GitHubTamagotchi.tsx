@@ -37,7 +37,7 @@ const GitHubTamagotchi: React.FC<GitHubTamagotchiProps> = () => {
   }, []);
 
   useEffect(() => {
-    setStage(Math.min(Math.floor(commits / 10), 3));
+    setStage(Math.min(Math.floor(commits / 10), 5));
   }, [commits]);
 
   useEffect(() => {
@@ -61,14 +61,14 @@ const GitHubTamagotchi: React.FC<GitHubTamagotchiProps> = () => {
       `
    ▄▄██▄▄
   ██░░░░██
-  ██░░░░██
+  ██░✿✿░██
   ██░░░░██
    ▀▀██▀▀
     `,
       `
    ▄▄██▄▄
   ██▒▒▒▒██
-  ██˛°˛°██
+  ██˛♥♥˛██
   ██▒▒▒▒██
    ▀▀██▀▀
     `
@@ -78,7 +78,7 @@ const GitHubTamagotchi: React.FC<GitHubTamagotchiProps> = () => {
       `
    ▄▄██▄▄
   ██▓▓▓▓██
-  ██◕  ◕██
+  ██◕ω◕██
    ██ ‿ ██
     ▀██▀
    ▄█  █▄
@@ -86,7 +86,7 @@ const GitHubTamagotchi: React.FC<GitHubTamagotchiProps> = () => {
       `
    ▄▄██▄▄
   ██▓▓▓▓██
-  ██⊙  ⊙██
+  ██⊙ω⊙██
    ██ ‿ ██
     ▀██▀
    ▄█  █▄
@@ -97,7 +97,7 @@ const GitHubTamagotchi: React.FC<GitHubTamagotchiProps> = () => {
       `
     ▄██▄
    ██▓▓██
-  ██●  ●██
+  ██●ㅅ●██
   ██    ██
    ██  ██
     ▀██▀
@@ -106,18 +106,39 @@ const GitHubTamagotchi: React.FC<GitHubTamagotchiProps> = () => {
       `
     ▄██▄
    ██▓▓██
-  ██☆  ☆██
+  ██☆ㅅ☆██
   ██  ω ██
    ██  ██
     ▀██▀
    ▄█  █▄
     `
     ],
+    // Teen
+    [
+      `
+   ▄███▄
+  ██▓▓▓██
+ ██◕  ◕██
+ ██  ㅅ ██
+  ██   ██
+   ▀███▀
+  ▄█▀ ▀█▄
+    `,
+      `
+   ▄███▄
+  ██▓▓▓██
+ ██⊙  ⊙██
+ ██  ω ██
+  ██   ██
+   ▀███▀
+  ▄█▀ ▀█▄
+    `
+    ],
     // Adult 
     [
       ` 
   ▐▀▄   ▄▀▌
-  ██◕▼◕██
+  ██◕▽◕██
   ██▄█▀█▄██
    ▄▀▄██▄▀▄
   █  █▼▼█  █
@@ -125,11 +146,32 @@ const GitHubTamagotchi: React.FC<GitHubTamagotchiProps> = () => {
     `,
       `
   ▐▀▄   ▄▀▌
-  ██⊙▼⊙██
+  ██⊙▽⊙██
   ██▄█▀█▄██
    ▄▀▄██▄▀▄
   █  █▼▼█  █
      ▀  ▀
+    `
+    ],
+    // Elder
+    [
+      `
+   ▄▄█████▄▄
+  ██▓▓▓▓▓▓▓██
+ ██ ◕  ◡  ◕ ██
+ ██   ▼▼▼   ██
+  ██▄▄   ▄▄██
+    ▀█████▀
+   ▄█▀   ▀█▄
+    `,
+      `
+   ▄▄█████▄▄
+  ██▓▓▓▓▓▓▓██
+ ██ ⊙  ◡  ⊙ ██
+ ██   ▼▼▼   ██
+  ██▄▄   ▄▄██
+    ▀█████▀
+   ▄█▀   ▀█▄
     `
     ],
   ];
@@ -164,7 +206,9 @@ const GitHubTamagotchi: React.FC<GitHubTamagotchiProps> = () => {
         stage === 0 ? "Keep contributing to hatch the egg!" :
         stage === 1 ? "Your creature is a baby!" :
         stage === 2 ? "Your creature is growing into a child!" :
-        "Your creature is thriving!"
+        stage === 3 ? "Your creature is growing into a teen!" :
+        stage === 4 ? "Your creature is thriving" :
+        "Your creature is wise and mature!"
       }</p>
     </div>
   );
