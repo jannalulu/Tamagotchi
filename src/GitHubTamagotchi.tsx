@@ -106,7 +106,7 @@ const GitHubTamagotchi: React.FC<GitHubTamagotchiProps> = () => {
       <p>Commits: {commits}</p>
       <p>Stage: {stage}</p>
       <h2>GitHub Tamagotchi</h2>
-      {username && <p>GitHub User: {username}</p>}
+      {/*username && <p>GitHub User: {username}</p>*/}
       <pre style={{
         fontFamily: 'monospace',
         fontSize: '20px',

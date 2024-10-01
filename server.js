@@ -31,8 +31,8 @@ app.get('/api/commits', async (req, res) => {
     const userData = await fetchGitHubData(`${GITHUB_API_URL}/user`, token);
     const username = userData.login;
 
-    const fourteenDaysAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-    const searchQuery = `author:${username} author-date:>${fourteenDaysAgo}`;
+    const xDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    const searchQuery = `author:${username} author-date:>${xDaysAgo}`;
     const searchUrl = `${GITHUB_API_URL}/search/commits?q=${encodeURIComponent(searchQuery)}`;
 
     const searchData = await fetchGitHubData(searchUrl, token);
